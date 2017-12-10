@@ -9,6 +9,8 @@ import { BrowserRouter } from 'react-router-dom';
 import createStore from './store';
 import AppRouter from './components/AppRouter';
 
+window.Chart = require('chart.js');
+
 const store = createStore();
 
 ReactDOM.render(

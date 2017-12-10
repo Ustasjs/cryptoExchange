@@ -1,0 +1,42 @@
+.mainPage {
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.content {
+  background-image: url('./images/pattern.svg');
+  background-size: cover;
+  flex-grow: 1;
+  display: flex;
+}
+
+.wrapper {
+  background-color: rgba(242, 243, 245, 0.9);
+  display: flex;
+  flex-grow: 1;
+}
+
+.container {
+  width: 1280px;
+  margin: 0 auto;
+}
+
+.container_content {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.trade {
+  margin-left: 80px;
+}
+
+.data {
+  margin-right: 20px;
+  margin-top: 50px;
+}
