@@ -9,10 +9,10 @@ import MainPage from '../MainPage';
 export class AppRouter extends Component {
   render() {
     return (
-      <div className="AppRpotser">
+      <div className="AppRouter">
         <Switch>
           <Route path="/" exact component={AuthPage} />
-          <PrivateRoute path="/main" component={MainPage} />
+          <PrivateRoute path="/trade" component={MainPage} />
           <Redirect to="/" />
         </Switch>
       </div>

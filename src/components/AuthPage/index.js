@@ -24,7 +24,7 @@ export class AuthPage extends Component {
     const { loginError, registrationError, isAuthorized } = this.props;
 
     if (isAuthorized) {
-      return <Redirect to="/main" />;
+      return <Redirect to="/trade/btc" />;
     }
     return (
       <main className="AuthPage">
