@@ -54,7 +54,7 @@ export function* currencyWatch() {
   }
 }
 
-function* fetchBtcFlow(action) {
+export function* fetchBtcFlow(action) {
   try {
     const response = yield call(candles, 'btc', action.payload);
     const result = handleInputData(response);
@@ -64,7 +64,7 @@ function* fetchBtcFlow(action) {
   }
 }
 
-function* fetchEthFlow(action) {
+export function* fetchEthFlow(action) {
   try {
     const response = yield call(candles, 'eth', action.payload);
     const result = handleInputData(response);

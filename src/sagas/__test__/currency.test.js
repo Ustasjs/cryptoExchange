@@ -1,4 +1,5 @@
 import { take, select, put, cancel, call, fork } from 'redux-saga/effects';
+import { createMockTask } from 'redux-saga/utils';
 import { delay } from 'redux-saga';
 import { loginSuccess, logout } from '../../actions/auth';
 import { getOffset } from '../../reducers/currency';
@@ -15,7 +16,12 @@ import {
 } from '../../actions/currency';
 import { candles } from '../../api';
 import { handleInputData } from '../../helpers/dataHandler';
-import { fetchCurrencyFlow, currencyWatch } from '../currency';
+import {
+  fetchCurrencyFlow,
+  currencyWatch,
+  fetchBtcFlow,
+  fetchEthFlow
+} from '../currency';
 
 describe('Saga fetchCurrencyFlow', () => {
   const saga = fetchCurrencyFlow();
@@ -37,25 +43,103 @@ describe('Saga fetchCurrencyFlow', () => {
   });
 });
 
-// describe('Saga ', () => {
-//   describe('Script without logout action', () => {
-//     const saga = currencyWatch();
-//     it('1. Effect take actions', () => {
-//       expect(saga.next(loginSuccess).value).toEqual(
-//         take([loginSuccess, logout, selectBtc, selectEth, selectOffset])
-//       );
-//     });
-//     it('2. Effect fork fetchCurrencyFlow', () => {
-//       expect(saga.next({task: task}).value).toEqual(fork(fetchCurrencyFlow));
-//     });
-//     it('3. Effect take actions', () => {
-//       expect(saga.next(selectBtc).value).toEqual(
-//         take([loginSuccess, logout, selectBtc, selectEth, selectOffset])
-//       );
-//     });
-//     it('4. Effect cancel currencyTask', () => {
-//       expect(saga.next(selectBtc).value).toEqual(
-//         cansel({task: task})
-//       );
-//   });
-// });
+describe('Saga currencyWatch', () => {
+  const saga = currencyWatch();
+  const task = createMockTask();
+  it('1. Effect take actions', () => {
+    expect(saga.next().value).toEqual(
+      take([loginSuccess, logout, selectBtc, selectEth, selectOffset])
+    );
+  });
+  it('2. Effect fork fetchCurrencyFlow', () => {
+    expect(saga.next(loginSuccess).value).toEqual(fork(fetchCurrencyFlow));
+  });
+  it('3. Effect take actions', () => {
+    expect(saga.next(task).value).toEqual(
+      take([loginSuccess, logout, selectBtc, selectEth, selectOffset])
+    );
+  });
+  it('4. Effect call cancel currencyTask', () => {
+    expect(saga.next().value).toEqual(cancel(task));
+  });
+});
+
+describe('Saga fetchBtcFlow', () => {
+  describe('Script without error', () => {
+    const saga = fetchBtcFlow(fetchBtcRequest('data'));
+    const response = {
+      data: {
+        result: [
+          { mts: 1512916680000, sell: 15117, purchase: 14965.83 },
+          { mts: 1512916560000, sell: 15329, purchase: 15176.205 }
+        ]
+      }
+    };
+    const result = handleInputData(response);
+    it('1. Effect call candles', () => {
+      expect(saga.next().value).toEqual(call(candles, 'btc', 'data'));
+    });
+    it('2. Effect put fetchBtcSuccess', () => {
+      expect(saga.next(response).value).toEqual(put(fetchBtcSuccess(result)));
+    });
+  });
+
+  describe('Script with error', () => {
+    const saga = fetchBtcFlow(fetchBtcRequest('data'));
+    const response = {
+      data: {
+        result: [
+          { mts: 1512916680000, sell: 15117, purchase: 14965.83 },
+          { mts: 1512916560000, sell: 15329, purchase: 15176.205 }
+        ]
+      }
+    };
+    const result = handleInputData(response);
+    it('1. Effect call candles', () => {
+      expect(saga.next().value).toEqual(call(candles, 'btc', 'data'));
+    });
+    it('2. Effect put fetchEthFailure', () => {
+      expect(saga.throw('error').value).toEqual(put(fetchBtcFailure('error')));
+    });
+  });
+});
+
+describe('Saga fetchEthFlow', () => {
+  describe('Script without error', () => {
+    const saga = fetchEthFlow(fetchEthRequest('data'));
+    const response = {
+      data: {
+        result: [
+          { mts: 1512916680000, sell: 15117, purchase: 14965.83 },
+          { mts: 1512916560000, sell: 15329, purchase: 15176.205 }
+        ]
+      }
+    };
+    const result = handleInputData(response);
+    it('1. Effect call candles', () => {
+      expect(saga.next().value).toEqual(call(candles, 'eth', 'data'));
+    });
+    it('2. Effect put fetchEthSuccess', () => {
+      expect(saga.next(response).value).toEqual(put(fetchEthSuccess(result)));
+    });
+  });
+
+  describe('Script with error', () => {
+    const saga = fetchEthFlow(fetchEthRequest('data'));
+    const response = {
+      data: {
+        result: [
+          { mts: 1512916680000, sell: 15117, purchase: 14965.83 },
+          { mts: 1512916560000, sell: 15329, purchase: 15176.205 }
+        ]
+      }
+    };
+    const result = handleInputData(response);
+    it('1. Effect call candles', () => {
+      expect(saga.next().value).toEqual(call(candles, 'eth', 'data'));
+    });
+    it('2. Effect put fetchEthFailure', () => {
+      expect(saga.throw('error').value).toEqual(put(fetchEthFailure('error')));
+    });
+  });
+});

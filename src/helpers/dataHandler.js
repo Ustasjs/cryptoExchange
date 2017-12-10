@@ -9,9 +9,7 @@ export function handleInputData(response) {
   };
   result.sell = handleDataForChart(result.data, 'sell');
   result.purchase = handleDataForChart(result.data, 'purchase');
-  result.currentPrice = result.purchase[result.purchase.length - 1][1].toFixed(
-    1
-  );
+  result.currentPrice = result.sell[0][1].toFixed(1);
   result.min = getExtremeValue(result.data, 'min');
   result.max = getExtremeValue(result.data, 'max');
 
