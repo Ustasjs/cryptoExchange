@@ -41,14 +41,14 @@ function getExtremeValue(inputData, typeOfExtreme) {
   }
 }
 
-function getMinValueOfProp(arr, prop) {
+export function getMinValueOfProp(arr, prop) {
   let elementWithMinValue = arr.reduce((prev, current) => {
     return current[prop] < prev[prop] ? current : prev;
   });
   return elementWithMinValue[prop];
 }
 
-function getMaxValueOfProp(arr, prop) {
+export function getMaxValueOfProp(arr, prop) {
   let elementWithMaxValue = arr.reduce((prev, current) => {
     return current[prop] > prev[prop] ? current : prev;
   });

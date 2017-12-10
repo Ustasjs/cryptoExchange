@@ -24,13 +24,13 @@ import {
 import { candles } from '../api';
 import { handleInputData } from '../helpers/dataHandler';
 
-function* fetchCurrencyFlow() {
+export function* fetchCurrencyFlow() {
   while (true) {
     const offset = yield select(getOffset);
     yield put(fetchBtcRequest(offset));
     yield put(fetchEthRequest(offset));
 
-    yield delay(15000);
+    yield call(delay, 15000);
   }
 }
 
