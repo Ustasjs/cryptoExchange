@@ -18,12 +18,12 @@ export class Footer extends Component {
           <nav className="footer__item nav">
             <ul className="nav__list">
               <li className="nav__item">
-                <a href="#" className="nav__link">
+                <a href="" className="nav__link">
                   Главная
                 </a>
               </li>
               <li className="nav__item">
-                <a href="#" className="nav__link">
+                <a href="" className="nav__link">
                   Рейтинг
                 </a>
               </li>
