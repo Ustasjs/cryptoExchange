@@ -24,7 +24,9 @@ export class Header extends Component {
                 id="btc-link"
                 activeClassName="currency__link_active"
               >
-                <div className="currency__value">{currentPriceBtc}</div>
+                <div className="currency__value" id="btcCurrentValue">
+                  {currentPriceBtc}
+                </div>
                 <div className="currency__type">1 BTC</div>
               </NavLink>
             </li>
@@ -36,7 +38,9 @@ export class Header extends Component {
                 id="eth-link"
                 activeClassName="currency__link_active"
               >
-                <div className="currency__value">{currentPriceEth}</div>
+                <div className="currency__value" id="ethCurrentValue">
+                  {currentPriceEth}
+                </div>
                 <div className="currency__type">1 ETH</div>
               </NavLink>
             </li>
