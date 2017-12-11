@@ -39,7 +39,11 @@ export class AuthPage extends Component {
             />
           </div>
           <div className="auth__footer">
-            {isLoginStage ? 'Впервые на сайте?' : 'Уже зарегестрированы?'}
+            {isLoginStage ? (
+              <span className="auth__text">Впервые на сайте?</span>
+            ) : (
+              <span className="auth__text">Уже зарегестрированы?</span>
+            )}
             <a className="auth__link" onClick={this.handleStatusChangeClick}>
               {isLoginStage ? 'Регистрация' : 'Войти'}
             </a>
