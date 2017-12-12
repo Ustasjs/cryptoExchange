@@ -15,20 +15,6 @@ export class Footer extends Component {
               <p className="footer__par">Автор работы: Устюжанин Станислав.</p>
             </div>
           </div>
-          <nav className="footer__item footer__item_nav">
-            <ul className="nav__list">
-              <li className="nav__item">
-                <a href="" className="nav__link">
-                  Главная
-                </a>
-              </li>
-              <li className="nav__item">
-                <a href="" className="nav__link">
-                  Рейтинг
-                </a>
-              </li>
-            </ul>
-          </nav>
           <div className="footer__item footer__item_right">
             <div className="footer__wrap">
               <img src={footerLogo} alt="logo" className="footer__logo" />

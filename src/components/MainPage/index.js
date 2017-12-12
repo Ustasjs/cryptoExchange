@@ -4,6 +4,8 @@ import { Route, Switch } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 import Chart from './Chart';
+import Account from './Account';
+import TradeControls from './TradeControls';
 import './MainPage.css';
 import {
   getBtc,
@@ -33,13 +35,14 @@ export class MainPage extends Component {
           currentPriceBtc={currentPriceBtc}
           currentPriceEth={currentPriceEth}
         />
-        <div className="content">
+        <main className="content">
           <div className="wrapper">
             <div className="container container_content">
-              <aside className="trade">
-                <div />
-              </aside>
-              <main className="data">
+              <section className="trade">
+                <Account />
+                <TradeControls />
+              </section>
+              <section className="data">
                 <Switch>
                   <Route
                     ololo={'ololo'}
@@ -68,10 +71,10 @@ export class MainPage extends Component {
                     )}
                   />
                 </Switch>
-              </main>
+              </section>
             </div>
           </div>
-        </div>
+        </main>
         <Footer />
       </div>
     );

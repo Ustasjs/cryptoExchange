@@ -21,7 +21,7 @@ export class Chart extends Component {
 
     return (
       <div className="chart">
-        <h2 className="chart__title">Окно графика</h2>
+        <h2 className="title chart_title">Окно графика</h2>
         <ul className="chart__buttons" onClick={this.handleClick}>
           <li className="chart__button chart__button_active" data-value="2h">
             2ч
