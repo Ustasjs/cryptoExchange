@@ -15,7 +15,7 @@ describe('Component Chart', () => {
 
   describe('general markup', () => {
     it('Chart title is exist', () => {
-      expect(wrapper.find('.chart__title')).toHaveLength(1);
+      expect(wrapper.find('.title')).toHaveLength(1);
     });
     it('Chart buttons list is exist', () => {
       expect(wrapper.find('.chart__buttons')).toHaveLength(1);
