@@ -9,6 +9,7 @@ import {
   fetchEthFailure,
   fetchEthSuccess
 } from '../actions/currency';
+import { logout } from '../actions/auth';
 import { handleActions } from 'redux-actions';
 
 const initState = {
@@ -32,11 +33,11 @@ export const currency = handleActions(
   {
     [selectBtc]: (state, action) => ({
       ...state,
-      selected: action.payload
+      selected: 'btc'
     }),
     [selectEth]: (state, action) => ({
       ...state,
-      selected: action.payload
+      selected: 'eth'
     }),
     [selectOffset]: (state, action) => ({
       ...state,
@@ -67,7 +68,8 @@ export const currency = handleActions(
     [fetchEthFailure]: (state, action) => ({
       ...state,
       ethLoadingState: { isLoading: false, isLoaded: true, error: action.error }
-    })
+    }),
+    [logout]: (state, action) => ({ ...initState })
   },
   initState
 );

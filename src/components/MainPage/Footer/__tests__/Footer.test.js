@@ -10,9 +10,6 @@ describe('Component Footer', () => {
     it('Info block is exist', () => {
       expect(wrapper.find('.footer__info')).toHaveLength(1);
     });
-    it('Navigation is exist', () => {
-      expect(wrapper.find('nav')).toHaveLength(1);
-    });
     it('Logo is exist', () => {
       expect(wrapper.find('.footer__logo')).toHaveLength(1);
     });

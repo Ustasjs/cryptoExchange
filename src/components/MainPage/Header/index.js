@@ -6,7 +6,7 @@ import headerLogo from '../images/Logo-white.svg';
 export class Header extends Component {
   render() {
     const { url } = this.props.match;
-    const { onClick, currentPriceEth, currentPriceBtc } = this.props;
+    const { onClick, currentPriceEth, currentPriceBtc, email } = this.props;
     return (
       <header className="header">
         <div className="container container_header">
@@ -25,7 +25,7 @@ export class Header extends Component {
                 activeClassName="currency__link_active"
               >
                 <div className="currency__value" id="btcCurrentValue">
-                  {currentPriceBtc}
+                  {this.roundPrices(currentPriceBtc)}
                 </div>
                 <div className="currency__type">1 BTC</div>
               </NavLink>
@@ -39,20 +39,32 @@ export class Header extends Component {
                 activeClassName="currency__link_active"
               >
                 <div className="currency__value" id="ethCurrentValue">
-                  {currentPriceEth}
+                  {this.roundPrices(currentPriceEth)}
                 </div>
                 <div className="currency__type">1 ETH</div>
               </NavLink>
             </li>
           </ul>
           <ul className="header__item header__item_right">
-            <li className="header__link">1 место</li>
-            <li className="header__link">user email</li>
+            <li className="header__userInfo">{email}</li>
+            <li
+              className="header__userInfo header__userInfo_clickable"
+              onClick={this.handleClick}
+            >
+              Logout
+            </li>
           </ul>
         </div>
       </header>
     );
   }
+
+  handleClick = e => {
+    const { logout } = this.props;
+    logout();
+  };
+
+  roundPrices = price => (price ? price.toFixed(1) : price);
 }
 
 export default Header;

@@ -4,6 +4,8 @@ import { Route, Switch } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 import Chart from './Chart';
+import Account from './Account';
+import TradeControls from './TradeControls';
 import './MainPage.css';
 import {
   getBtc,
@@ -11,6 +13,13 @@ import {
   getBtcLoadingState,
   getEthLoadingState
 } from '../../reducers/currency';
+import {
+  getUserEmail,
+  getParsedUsd,
+  getParsedBtc,
+  getParsedEth
+} from '../../reducers/user';
+import { logout } from '../../actions/auth';
 import { selectBtc, selectEth, selectOffset } from '../../actions/currency';
 
 export class MainPage extends Component {
@@ -20,10 +29,17 @@ export class MainPage extends Component {
       btc,
       eth,
       btcLoadingState: { isLoaded: isBtcLoaded },
-      ethLoadingState: { isLoaded: isEthLoaded }
+      ethLoadingState: { isLoaded: isEthLoaded },
+      userEmail,
+      usdWallet,
+      btcWallet,
+      ethWallet,
+      selectBtc,
+      selectEth,
+      logout
     } = this.props;
-    const currentPriceBtc = btc.currentPrice;
-    const currentPriceEth = eth.currentPrice;
+    const currentPriceBtc = btc.currentSellPrice;
+    const currentPriceEth = eth.currentSellPrice;
 
     return (
       <div className="mainPage">
@@ -32,17 +48,19 @@ export class MainPage extends Component {
           onClick={this.handleCurrencyClick}
           currentPriceBtc={currentPriceBtc}
           currentPriceEth={currentPriceEth}
+          email={userEmail}
+          logout={logout}
         />
-        <div className="content">
+        <main className="content">
           <div className="wrapper">
             <div className="container container_content">
-              <aside className="trade">
-                <div />
-              </aside>
-              <main className="data">
+              <section className="trade">
+                <Account usd={usdWallet} btc={btcWallet} eth={ethWallet} />
+                <TradeControls />
+              </section>
+              <section className="data">
                 <Switch>
                   <Route
-                    ololo={'ololo'}
                     path={`${url}/btc`}
                     exact
                     render={props => (
@@ -51,11 +69,11 @@ export class MainPage extends Component {
                         data={btc}
                         isLoaded={isBtcLoaded}
                         {...props}
+                        select={selectBtc}
                       />
                     )}
                   />
                   <Route
-                    ololo={'ololo'}
                     path={`${url}/eth`}
                     exact
                     render={props => (
@@ -64,14 +82,15 @@ export class MainPage extends Component {
                         data={eth}
                         isLoaded={isEthLoaded}
                         {...props}
+                        select={selectEth}
                       />
                     )}
                   />
                 </Switch>
-              </main>
+              </section>
             </div>
           </div>
-        </div>
+        </main>
         <Footer />
       </div>
     );
@@ -107,12 +126,17 @@ const mapStateToProps = state => ({
   btc: getBtc(state),
   eth: getEth(state),
   btcLoadingState: getBtcLoadingState(state),
-  ethLoadingState: getEthLoadingState(state)
+  ethLoadingState: getEthLoadingState(state),
+  userEmail: getUserEmail(state),
+  usdWallet: getParsedUsd(state),
+  btcWallet: getParsedBtc(state),
+  ethWallet: getParsedEth(state)
 });
 const mapDispatchToProps = {
   selectBtc,
   selectEth,
-  selectOffset
+  selectOffset,
+  logout
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainPage);

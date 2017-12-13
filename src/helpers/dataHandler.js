@@ -1,42 +1,49 @@
+export function parseCurrency(numCurrency) {
+  if (!numCurrency) return (0).toFixed(4).split('.');
+  return numCurrency.toFixed(4).split('.');
+}
+
 export function handleInputData(response) {
+  function handleDataForChart(inputData, dataType) {
+    return inputData.map((value, index) => {
+      return [value.mts / 1000, value[dataType]];
+    });
+  }
+
+  function getExtremeValue(inputData, typeOfExtreme) {
+    switch (typeOfExtreme) {
+      case 'max':
+        let sellMax = getMaxValueOfProp(inputData, 'sell');
+        let purchaseMax = getMaxValueOfProp(inputData, 'purchase');
+        return Math.max(sellMax, purchaseMax);
+      case 'min':
+        let sellMin = getMinValueOfProp(inputData, 'sell');
+        let purchaseMin = getMinValueOfProp(inputData, 'purchase');
+        return Math.min(sellMin, purchaseMin);
+      default:
+        throw new Error(
+          'Неверное значения аргумента typeOfExtreme, аргумент может принимать только значения min и max'
+        );
+    }
+  }
+
   const result = {
     sell: [],
     purchase: [],
-    currentPrice: 0,
+    currentSellPrice: 0,
+    currentPurchasePrice: 0,
     min: 0,
     max: 0,
     data: response.data.result
   };
   result.sell = handleDataForChart(result.data, 'sell');
   result.purchase = handleDataForChart(result.data, 'purchase');
-  result.currentPrice = result.sell[0][1].toFixed(1);
+  result.currentSellPrice = result.sell[0][1];
+  result.currentPurchasePrice = result.purchase[0][1];
   result.min = getExtremeValue(result.data, 'min');
   result.max = getExtremeValue(result.data, 'max');
 
   return result;
-}
-
-function handleDataForChart(inputData, dataType) {
-  return inputData.map((value, index) => {
-    return [value.mts / 1000, value[dataType]];
-  });
-}
-
-function getExtremeValue(inputData, typeOfExtreme) {
-  switch (typeOfExtreme) {
-    case 'max':
-      let sellMax = getMaxValueOfProp(inputData, 'sell');
-      let purchaseMax = getMaxValueOfProp(inputData, 'purchase');
-      return Math.max(sellMax, purchaseMax);
-    case 'min':
-      let sellMin = getMinValueOfProp(inputData, 'sell');
-      let purchaseMin = getMinValueOfProp(inputData, 'purchase');
-      return Math.min(sellMin, purchaseMin);
-    default:
-      throw new Error(
-        'Неверное значения аргумента typeOfExtreme, аргумент может принимать только значения min и max'
-      );
-  }
 }
 
 export function getMinValueOfProp(arr, prop) {

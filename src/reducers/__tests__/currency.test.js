@@ -33,16 +33,16 @@ describe('currency reducer', () => {
     it('shouldn`t mutate init state', () => {
       expect(currency(initState, selectBtc())).not.toBe(initState);
     });
-    it('should put action.payload to selected field', () => {
-      expect(currency(null, selectBtc('data')).selected).toBe('data');
+    it('should put btc to selected field', () => {
+      expect(currency(null, selectBtc('btc')).selected).toBe('btc');
     });
   });
   describe('selectEth action', () => {
     it('shouldn`t mutate init state', () => {
       expect(currency(initState, selectEth())).not.toBe(initState);
     });
-    it('should put action.payload to selected field', () => {
-      expect(currency(null, selectEth('data')).selected).toBe('data');
+    it('should put eth to selected field', () => {
+      expect(currency(null, selectEth('eth')).selected).toBe('eth');
     });
   });
   describe('selectOffset action', () => {

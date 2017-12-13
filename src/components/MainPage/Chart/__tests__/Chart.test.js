@@ -11,11 +11,12 @@ describe('Component Chart', () => {
     purchase: '8',
     sell: '10'
   };
-  const wrapper = shallow(<Chart data />);
+  const select = () => true;
+  const wrapper = shallow(<Chart data={data} select={select} />);
 
   describe('general markup', () => {
     it('Chart title is exist', () => {
-      expect(wrapper.find('.chart__title')).toHaveLength(1);
+      expect(wrapper.find('.title')).toHaveLength(1);
     });
     it('Chart buttons list is exist', () => {
       expect(wrapper.find('.chart__buttons')).toHaveLength(1);
