@@ -17,6 +17,7 @@ export function* authFlow() {
     if (!isAuthorized) {
       if (localStorageToken) {
         token = localStorageToken;
+        yield call(setTokenApi, token);
         yield put(loginSuccess(token));
       } else {
         const action = yield take([loginSuccess, registrationSuccess]);

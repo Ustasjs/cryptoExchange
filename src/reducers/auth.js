@@ -4,7 +4,8 @@ import {
   registrationFailure,
   loginRequest,
   loginSuccess,
-  loginFailure
+  loginFailure,
+  logout
 } from '../actions/auth';
 import { handleActions } from 'redux-actions';
 
@@ -43,6 +44,10 @@ export const auth = handleActions(
       ...state,
       isAuthorized: false,
       loginError: action.payload.message
+    }),
+    [logout]: (state, action) => ({
+      ...state,
+      isAuthorized: false
     })
   },
   initState

@@ -1,9 +1,20 @@
 .controls {
   margin-top: 45px;
+  position: relative;
 }
 
 .controls_title {
-  margin-bottom: 35px;
+  margin-bottom: 45px;
+}
+
+.controls__error {
+  position: absolute;
+  color: rgb(223, 4, 4);
+  top: 50px;
+}
+
+.controls__error_trade {
+  top: 30px;
 }
 
 .control__wrap {
@@ -30,6 +41,10 @@
 
 .input__value_btc {
   padding-right: 55px;
+}
+
+.input__value_error {
+  background-color: #fdcbcb;
 }
 
 .input__type {

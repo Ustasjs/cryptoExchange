@@ -5,11 +5,17 @@ import { shallow } from 'enzyme';
 
 describe('Component Header', () => {
   const onClick = () => true;
-  const currentPriceEth = '600';
-  const currentPriceBtc = '15000';
+  const currentPriceEth = 600;
+  const currentPriceBtc = 15000;
   const match = { url: 'url' };
-  const wrapper = shallow(<Header currentPriceEth currentPriceBtc match />);
-  wrapper.setProps({ currentPriceEth, currentPriceBtc, match });
+  const wrapper = shallow(
+    <Header
+      currentPriceEth={currentPriceEth}
+      currentPriceBtc={currentPriceBtc}
+      match={match}
+    />
+  );
+
   describe('general markup', () => {
     it('Logo is exist', () => {
       expect(wrapper.find('.header__logo')).toHaveLength(1);
@@ -25,11 +31,11 @@ describe('Component Header', () => {
           '/eth'
         ]);
       });
-      it('First NavLink`s text content is equal to currentPriceBtc prop', () => {
-        expect(wrapper.find('#btcCurrentValue').text()).toBe(currentPriceBtc);
+      it('First NavLink`s text content is equal to currentPriceBtc prop, rounded to 1 integer after dot', () => {
+        expect(wrapper.find('#btcCurrentValue').text()).toBe('15000.0');
       });
-      it('Second NavLink`s text content is equal to currentPriceEth prop', () => {
-        expect(wrapper.find('#ethCurrentValue').text()).toBe(currentPriceEth);
+      it('Second NavLink`s text content is equal to currentPriceEth prop, rounded to 1 integer after dot', () => {
+        expect(wrapper.find('#ethCurrentValue').text()).toBe('600.0');
       });
     });
   });

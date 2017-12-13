@@ -65,7 +65,9 @@ export class AuthForm extends Component {
     const { email, password } = this.state;
     e.preventDefault();
 
-    if (email === '' || password === '') {
+    if (email !== '' && !email.includes('@')) {
+      this.setState({ inputError: 'Email должен содержать знак @' });
+    } else if (email === '' || password === '') {
       this.setState({ inputError: 'Оба поля обязательны для заполнения' });
     } else {
       this.setState({ inputError: false });

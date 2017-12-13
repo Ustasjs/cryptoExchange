@@ -8,6 +8,11 @@ export class Chart extends Component {
     isDataLoaded: true
   };
 
+  componentDidMount() {
+    const { select } = this.props;
+    select();
+  }
+
   componentWillReceiveProps(nextProps) {
     const { isLoaded } = nextProps;
     if (isLoaded) {
