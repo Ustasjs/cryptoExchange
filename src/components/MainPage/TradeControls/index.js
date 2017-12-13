@@ -10,22 +10,28 @@ import './TradeControls.css';
 
 export class TradeControls extends Component {
   state = {
-    currentValue: '',
     resultValue: '',
     inputError: false,
+    currencyInputError: false,
+    sellInputError: false,
+    purchaseInputError: false,
     sellCost: '',
     purchaseCost: ''
   };
 
   componentWillReceiveProps(nextProps) {
-    const { resultValue } = this.state;
+    const { resultValue, inputError } = this.state;
     const { selected } = this.props.selected;
     const newSelected = nextProps.selected;
-    if (selected !== nextProps.selected) {
+    if (selected !== nextProps.selected && !inputError) {
       this.setState({
         ...this.state,
-        sellCost: this.getPrice(resultValue, newSelected, 'sell').toFixed(2),
-        purchaseCost: this.getPrice(
+        sellCost: this.getCurrencyPrice(
+          resultValue,
+          newSelected,
+          'sell'
+        ).toFixed(2),
+        purchaseCost: this.getCurrencyPrice(
           resultValue,
           newSelected,
           'purchase'
@@ -36,7 +42,15 @@ export class TradeControls extends Component {
 
   render() {
     const { selected, errorSell, errorBuy } = this.props;
-    const { currentValue, sellCost, purchaseCost, inputError } = this.state;
+    const {
+      resultValue,
+      sellCost,
+      purchaseCost,
+      inputError,
+      currencyInputError,
+      sellInputError,
+      purchaseInputError
+    } = this.state;
     return (
       <div className="controls">
         <h2 className="title controls_title">Покупка / продажа</h2>
@@ -61,11 +75,11 @@ export class TradeControls extends Component {
                   type="text"
                   className={
                     'input__value input__value_btc' +
-                    (inputError ? ' input__value_error' : '')
+                    (currencyInputError ? ' input__value_error' : '')
                   }
-                  value={currentValue}
-                  onChange={this.handleChange}
-                  onBlur={this.handleBlur}
+                  value={resultValue}
+                  onChange={this.handleCurrencyChange}
+                  onBlur={this.handleCurrencyBlur}
                 />
                 <span className="input__type">{selected.toUpperCase()}</span>
               </div>
@@ -75,9 +89,16 @@ export class TradeControls extends Component {
             <div className="control__wrap">
               <div className="input">
                 <input
+                  maxLength="18"
                   type="text"
-                  className="input__value"
+                  className={
+                    'input__value input__value_btc' +
+                    (purchaseInputError ? ' input__value_error' : '')
+                  }
                   value={purchaseCost}
+                  id="purchase"
+                  onChange={this.handleDollarsChange}
+                  onBlur={this.handleDollarsBlur}
                 />
                 <span className="input__type">$</span>
               </div>
@@ -93,7 +114,18 @@ export class TradeControls extends Component {
           <li className="control">
             <div className="control__wrap">
               <div className="input">
-                <input type="text" className="input__value" value={sellCost} />
+                <input
+                  maxLength="18"
+                  type="text"
+                  className={
+                    'input__value input__value_btc' +
+                    (sellInputError ? ' input__value_error' : '')
+                  }
+                  value={sellCost}
+                  id="sell"
+                  onChange={this.handleDollarsChange}
+                  onBlur={this.handleDollarsBlur}
+                />
                 <span className="input__type">$</span>
               </div>
               <button
@@ -110,39 +142,122 @@ export class TradeControls extends Component {
     );
   }
 
-  handleChange = e => {
+  handleCurrencyChange = e => {
     const { selected } = this.props;
     const value = e.target.value;
-    this.setState({ ...this.state, currentValue: value }, () => {
-      if (/^\d+$/.test(value)) {
+    this.setState({ ...this.state, resultValue: value }, () => {
+      if (/^([0-9]*[.])?[0-9]+$/.test(value)) {
         this.setState({
           ...this.state,
-          sellCost: this.getPrice(value, selected, 'sell').toFixed(2),
-          purchaseCost: this.getPrice(value, selected, 'purchase').toFixed(2)
+          sellCost: this.getCurrencyPrice(value, selected, 'sell').toFixed(2),
+          purchaseCost: this.getCurrencyPrice(
+            value,
+            selected,
+            'purchase'
+          ).toFixed(2),
+          inputError: false,
+          currencyInputError: false,
+          sellInputError: false,
+          purchaseInputError: false
         });
       } else if (value === '') {
         this.setState({
           ...this.state,
           sellCost: '',
-          purchaseCost: ''
+          purchaseCost: '',
+          inputError: false,
+          currencyInputError: false,
+          sellInputError: false,
+          purchaseInputError: false
         });
       }
     });
   };
 
-  handleBlur = e => {
-    const { currentValue } = this.state;
+  handleDollarsChange = e => {
+    const { selected } = this.props;
     const value = e.target.value;
-    if (!/^\d+$/.test(value) && value !== '') {
+    const targetId = e.target.getAttribute('id');
+    let targetValueType;
+    let secondValueType;
+    let secondId;
+    let resultValue = this.getCurrencyValue(value, selected, targetId);
+    if (targetId === 'sell') {
+      targetValueType = 'sellCost';
+      secondValueType = 'purchaseCost';
+      secondId = 'purchase';
+    } else {
+      targetValueType = 'purchaseCost';
+      secondValueType = 'sellCost';
+      secondId = 'sell';
+    }
+
+    this.setState({ ...this.state, [targetValueType]: value }, () => {
+      if (/^([0-9]*[.])?[0-9]+$/.test(value)) {
+        this.setState({
+          ...this.state,
+          resultValue: resultValue,
+          [secondValueType]: this.getCurrencyPrice(
+            resultValue,
+            selected,
+            secondId
+          ).toFixed(2),
+          inputError: false,
+          currencyInputError: false,
+          sellInputError: false,
+          purchaseInputError: false
+        });
+      } else if (value === '') {
+        this.setState({
+          ...this.state,
+          resultValue: '',
+          [secondValueType]: '',
+          inputError: false,
+          currencyInputError: false,
+          sellInputError: false,
+          purchaseInputError: false
+        });
+      }
+    });
+  };
+
+  handleCurrencyBlur = e => {
+    const value = e.target.value;
+    if (!/^([0-9]*[.])?[0-9]+$/.test(value) && value !== '') {
       this.setState({
         ...this.state,
-        inputError: 'Данное поле может содержать только цифры'
+        inputError: 'Введите положительное число',
+        currencyInputError: true
       });
     } else {
       this.setState({
         ...this.state,
-        resultValue: currentValue,
-        inputError: false
+        inputError: false,
+        currencyInputError: false
+      });
+    }
+  };
+
+  handleDollarsBlur = e => {
+    let typeOfError;
+    const value = e.target.value;
+    const id = e.target.getAttribute('id');
+    if (id === 'sell') {
+      typeOfError = 'sellInputError';
+    } else {
+      typeOfError = 'purchaseInputError';
+    }
+    if (!/^([0-9]*[.])?[0-9]+$/.test(value) && value !== '') {
+      this.setState({
+        ...this.state,
+        inputError: 'Введите положительное число',
+        [typeOfError]: true
+      });
+    } else {
+      this.setState({
+        ...this.state,
+        inputError: false,
+        [typeOfError]: false
       });
     }
   };
@@ -160,25 +275,46 @@ export class TradeControls extends Component {
     }
   };
 
-  getPrice = (value, typeOfValue, action) => {
+  getCurrencyPrice = (value, typeOfValue, typeOfAction) => {
     const { btc, eth } = this.props;
 
     if (!value || !btc.currentSellPrice || !eth.currentSellPrice) {
       return 0;
     }
 
-    if (action !== 'sell' && action !== 'purchase')
+    if (typeOfAction !== 'sell' && typeOfAction !== 'purchase') {
       throw new Error('Введен неверный тип транзакции');
+    }
 
     switch (typeOfValue) {
       case 'btc':
-        return action === 'sell'
+        return typeOfAction === 'sell'
           ? value * btc.currentSellPrice
           : value * btc.currentPurchasePrice;
       case 'eth':
-        return action === 'sell'
+        return typeOfAction === 'sell'
           ? value * eth.currentSellPrice
           : value * eth.currentPurchasePrice;
+      default:
+        throw new Error('Введен неверный тип валюты');
+    }
+  };
+
+  getCurrencyValue = (value, typeOfValue, typeOfAction) => {
+    const { btc, eth } = this.props;
+    if (typeOfAction !== 'sell' && typeOfAction !== 'purchase') {
+      throw new Error('Введен неверный тип транзакции');
+    }
+
+    switch (typeOfValue) {
+      case 'btc':
+        return typeOfAction === 'sell'
+          ? value / btc.currentSellPrice
+          : value / btc.currentPurchasePrice;
+      case 'eth':
+        return typeOfAction === 'sell'
+          ? value / eth.currentSellPrice
+          : value / eth.currentPurchasePrice;
       default:
         throw new Error('Введен неверный тип валюты');
     }
