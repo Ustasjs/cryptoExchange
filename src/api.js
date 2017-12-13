@@ -3,12 +3,12 @@ import axios from 'axios';
 axios.defaults.headers.post['Accept'] = '*/*';
 
 const instance = axios.create({
-  baseURL: 'http://lorem-ipsum.online/',
+  baseURL: 'https://lorem-ipsum.online/',
   headers: { Accept: '*/*' }
 });
 
 const jsonInstance = axios.create({
-  baseURL: 'http://lorem-ipsum.online/',
+  baseURL: 'https://lorem-ipsum.online/',
   headers: { 'Content-Type': 'application/json' }
 });
 
