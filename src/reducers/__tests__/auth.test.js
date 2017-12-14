@@ -4,7 +4,8 @@ import {
   registrationFailure,
   loginRequest,
   loginSuccess,
-  loginFailure
+  loginFailure,
+  logout
 } from '../../actions/auth';
 
 import { auth, handleRegistrationError } from '../auth';
@@ -80,6 +81,12 @@ describe('Auth reducer', () => {
       expect(auth(initState, loginFailure({ message })).loginError).toBe(
         message
       );
+    });
+  });
+  describe('logout action', () => {
+    it('logout action make is isAuthorized false', () => {
+      initState.isAuthorized = true;
+      expect(auth(initState, logout()).isAuthorized).toBe(false);
     });
   });
 });
