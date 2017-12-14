@@ -6,7 +6,7 @@ import {
   buyCurrencySuccess,
   buyCurrencyFailure
 } from '../../actions/trade';
-import { takeLatest, call, put } from 'redux-saga/effects';
+import { call, put } from 'redux-saga/effects';
 import { sellCurrency, buyCurrency } from '../../api';
 import { fetchSellCurrencySaga, fetchBuyCurrencySaga } from '../trade';
 
