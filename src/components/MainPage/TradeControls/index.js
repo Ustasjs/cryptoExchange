@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getSelected, getBtc, getEth } from '../../../reducers/currency';
 import { getErrorBuy, getErrorSell } from '../../../reducers/user';
-import {
-  sellCurrencyRequest,
-  buyCurrencyRequest
-} from '../../../actions/trade';
+import { sellCurrencyRequest, buyCurrencyRequest } from '../../../actions/trade';
 import './TradeControls.css';
 
 export class TradeControls extends Component {
@@ -26,16 +23,8 @@ export class TradeControls extends Component {
     if (selected !== nextProps.selected && !inputError) {
       this.setState({
         ...this.state,
-        sellCost: this.getCurrencyPrice(
-          resultValue,
-          newSelected,
-          'sell'
-        ).toFixed(2),
-        purchaseCost: this.getCurrencyPrice(
-          resultValue,
-          newSelected,
-          'purchase'
-        ).toFixed(2)
+        sellCost: this.getCurrencyPrice(resultValue, newSelected, 'sell'),
+        purchaseCost: this.getCurrencyPrice(resultValue, newSelected, 'purchase')
       });
     }
   }
@@ -54,15 +43,9 @@ export class TradeControls extends Component {
     return (
       <div className="controls">
         <h2 className="title controls_title">Покупка / продажа</h2>
-        {inputError ? (
-          <div className="controls__error">{inputError}</div>
-        ) : (
-          false
-        )}
+        {inputError ? <div className="controls__error">{inputError}</div> : false}
         {errorSell || errorBuy ? (
-          <div className="controls__error controls__error_trade">
-            Недостаточно средств
-          </div>
+          <div className="controls__error controls__error_trade">Недостаточно средств</div>
         ) : (
           false
         )}
@@ -78,8 +61,9 @@ export class TradeControls extends Component {
                     (currencyInputError ? ' input__value_error' : '')
                   }
                   value={resultValue}
-                  onChange={this.handleCurrencyChange}
-                  onBlur={this.handleCurrencyBlur}
+                  id="currency"
+                  onChange={this.handleInputChange}
+                  onBlur={this.handleInputBlur}
                 />
                 <span className="input__type">{selected.toUpperCase()}</span>
               </div>
@@ -97,8 +81,8 @@ export class TradeControls extends Component {
                   }
                   value={purchaseCost}
                   id="purchase"
-                  onChange={this.handleDollarsChange}
-                  onBlur={this.handleDollarsBlur}
+                  onChange={this.handleInputChange}
+                  onBlur={this.handleInputBlur}
                 />
                 <span className="input__type">$</span>
               </div>
@@ -118,13 +102,12 @@ export class TradeControls extends Component {
                   maxLength="18"
                   type="text"
                   className={
-                    'input__value input__value_btc' +
-                    (sellInputError ? ' input__value_error' : '')
+                    'input__value input__value_btc' + (sellInputError ? ' input__value_error' : '')
                   }
                   value={sellCost}
                   id="sell"
-                  onChange={this.handleDollarsChange}
-                  onBlur={this.handleDollarsBlur}
+                  onChange={this.handleInputChange}
+                  onBlur={this.handleInputBlur}
                 />
                 <span className="input__type">$</span>
               </div>
@@ -142,76 +125,48 @@ export class TradeControls extends Component {
     );
   }
 
-  handleCurrencyChange = e => {
-    const { selected } = this.props;
-    const value = e.target.value;
-    this.setState({ ...this.state, resultValue: value }, () => {
-      if (/^([0-9]*[.])?[0-9]+$/.test(value)) {
-        this.setState({
-          ...this.state,
-          sellCost: this.getCurrencyPrice(value, selected, 'sell').toFixed(2),
-          purchaseCost: this.getCurrencyPrice(
-            value,
-            selected,
-            'purchase'
-          ).toFixed(2),
-          inputError: false,
-          currencyInputError: false,
-          sellInputError: false,
-          purchaseInputError: false
-        });
-      } else if (value === '') {
-        this.setState({
-          ...this.state,
-          sellCost: '',
-          purchaseCost: '',
-          inputError: false,
-          currencyInputError: false,
-          sellInputError: false,
-          purchaseInputError: false
-        });
-      }
-    });
-  };
-
-  handleDollarsChange = e => {
+  handleInputChange = e => {
     const { selected } = this.props;
     const value = e.target.value;
     const targetId = e.target.getAttribute('id');
-    let targetValueType;
-    let secondValueType;
-    let secondId;
-    let resultValue = this.getCurrencyValue(value, selected, targetId);
-    if (targetId === 'sell') {
-      targetValueType = 'sellCost';
-      secondValueType = 'purchaseCost';
-      secondId = 'purchase';
-    } else {
-      targetValueType = 'purchaseCost';
-      secondValueType = 'sellCost';
-      secondId = 'sell';
+    let targetKey;
+    let firstRelatedKey;
+    let secondRelatedKey;
+    let firstRelatedValue;
+    let secondRelatedValue;
+
+    switch (targetId) {
+      case 'currency':
+        targetKey = 'resultValue';
+        firstRelatedKey = 'sellCost';
+        secondRelatedKey = 'purchaseCost';
+        firstRelatedValue = this.getCurrencyPrice(value, selected, 'sell');
+        secondRelatedValue = this.getCurrencyPrice(value, selected, 'purchase');
+        break;
+      case 'sell':
+        targetKey = 'sellCost';
+        firstRelatedKey = 'resultValue';
+        secondRelatedKey = 'purchaseCost';
+        firstRelatedValue = this.getCurrencyValue(value, selected, targetId);
+        secondRelatedValue = this.getCurrencyPrice(firstRelatedValue, selected, 'purchase');
+        break;
+      case 'purchase':
+        targetKey = 'purchaseCost';
+        firstRelatedKey = 'resultValue';
+        secondRelatedKey = 'sellCost';
+        firstRelatedValue = this.getCurrencyValue(value, selected, targetId);
+        secondRelatedValue = this.getCurrencyPrice(firstRelatedValue, selected, 'sell');
+        break;
+      default:
+        return;
     }
 
-    this.setState({ ...this.state, [targetValueType]: value }, () => {
-      if (/^([0-9]*[.])?[0-9]+$/.test(value)) {
+    this.setState({ ...this.state, [targetKey]: value }, () => {
+      if (/^([0-9]*[.])?[0-9]+$/.test(value) || value === '') {
         this.setState({
           ...this.state,
-          resultValue: resultValue,
-          [secondValueType]: this.getCurrencyPrice(
-            resultValue,
-            selected,
-            secondId
-          ).toFixed(2),
-          inputError: false,
-          currencyInputError: false,
-          sellInputError: false,
-          purchaseInputError: false
-        });
-      } else if (value === '') {
-        this.setState({
-          ...this.state,
-          resultValue: '',
-          [secondValueType]: '',
+          [firstRelatedKey]: firstRelatedValue,
+          [secondRelatedKey]: secondRelatedValue,
           inputError: false,
           currencyInputError: false,
           sellInputError: false,
@@ -221,43 +176,36 @@ export class TradeControls extends Component {
     });
   };
 
-  handleCurrencyBlur = e => {
+  handleInputBlur = e => {
     const value = e.target.value;
-    if (!/^([0-9]*[.])?[0-9]+$/.test(value) && value !== '') {
-      this.setState({
-        ...this.state,
-        inputError: 'Введите положительное число',
-        currencyInputError: true
-      });
-    } else {
-      this.setState({
-        ...this.state,
-        inputError: false,
-        currencyInputError: false
-      });
-    }
-  };
+    const targetId = e.target.getAttribute('id');
+    let errorType;
 
-  handleDollarsBlur = e => {
-    let typeOfError;
-    const value = e.target.value;
-    const id = e.target.getAttribute('id');
-    if (id === 'sell') {
-      typeOfError = 'sellInputError';
-    } else {
-      typeOfError = 'purchaseInputError';
+    switch (targetId) {
+      case 'currency':
+        errorType = 'currencyInputError';
+        break;
+      case 'sell':
+        errorType = 'sellInputError';
+        break;
+      case 'purchase':
+        errorType = 'purchaseInputError';
+        break;
+      default:
+        return;
     }
+
     if (!/^([0-9]*[.])?[0-9]+$/.test(value) && value !== '') {
       this.setState({
         ...this.state,
         inputError: 'Введите положительное число',
-        [typeOfError]: true
+        [errorType]: true
       });
     } else {
       this.setState({
         ...this.state,
         inputError: false,
-        [typeOfError]: false
+        [errorType]: false
       });
     }
   };
@@ -279,7 +227,7 @@ export class TradeControls extends Component {
     const { btc, eth } = this.props;
 
     if (!value || !btc.currentSellPrice || !eth.currentSellPrice) {
-      return 0;
+      return '';
     }
 
     if (typeOfAction !== 'sell' && typeOfAction !== 'purchase') {
@@ -289,12 +237,12 @@ export class TradeControls extends Component {
     switch (typeOfValue) {
       case 'btc':
         return typeOfAction === 'sell'
-          ? value * btc.currentSellPrice
-          : value * btc.currentPurchasePrice;
+          ? (value * btc.currentSellPrice).toFixed(2)
+          : (value * btc.currentPurchasePrice).toFixed(2);
       case 'eth':
         return typeOfAction === 'sell'
-          ? value * eth.currentSellPrice
-          : value * eth.currentPurchasePrice;
+          ? (value * eth.currentSellPrice).toFixed(2)
+          : (value * eth.currentPurchasePrice).toFixed(2);
       default:
         throw new Error('Введен неверный тип валюты');
     }
@@ -302,6 +250,8 @@ export class TradeControls extends Component {
 
   getCurrencyValue = (value, typeOfValue, typeOfAction) => {
     const { btc, eth } = this.props;
+    if (!value) return '';
+
     if (typeOfAction !== 'sell' && typeOfAction !== 'purchase') {
       throw new Error('Введен неверный тип транзакции');
     }
