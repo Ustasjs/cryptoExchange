@@ -65,8 +65,8 @@ export class AuthForm extends Component {
     const { email, password } = this.state;
     e.preventDefault();
 
-    if (email !== '' && !email.includes('@')) {
-      this.setState({ inputError: 'Email должен содержать знак @' });
+    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+      this.setState({ inputError: 'Email не валиден' });
     } else if (email === '' || password === '') {
       this.setState({ inputError: 'Оба поля обязательны для заполнения' });
     } else {

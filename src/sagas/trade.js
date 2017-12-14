@@ -6,7 +6,7 @@ import {
   buyCurrencySuccess,
   buyCurrencyFailure
 } from '../actions/trade';
-import { takeLatest, call, put } from 'redux-saga/effects';
+import { takeEvery, call, put } from 'redux-saga/effects';
 import { sellCurrency, buyCurrency } from '../api';
 
 export function* fetchSellCurrencySaga(action) {
@@ -32,9 +32,9 @@ export function* fetchBuyCurrencySaga(action) {
 }
 
 export function* fetchSellCurrencyWatch() {
-  yield takeLatest(sellCurrencyRequest, fetchSellCurrencySaga);
+  yield takeEvery(sellCurrencyRequest, fetchSellCurrencySaga);
 }
 
 export function* fetchBuyCurrencyWatch() {
-  yield takeLatest(buyCurrencyRequest, fetchBuyCurrencySaga);
+  yield takeEvery(buyCurrencyRequest, fetchBuyCurrencySaga);
 }
