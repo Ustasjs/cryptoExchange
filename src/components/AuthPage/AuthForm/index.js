@@ -44,11 +44,7 @@ export class AuthForm extends Component {
           registrationError={registrationError}
           inputError={inputError}
         />
-        <button
-          type="submit"
-          className="auth__submit"
-          onClick={this.handleClick}
-        >
+        <button type="submit" className="auth__submit" onClick={this.handleClick}>
           {isLoginStage ? 'Войти' : 'Зарегестрироваться'}
         </button>
       </form>
@@ -66,7 +62,7 @@ export class AuthForm extends Component {
     e.preventDefault();
 
     if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-      this.setState({ inputError: 'Email не валиден' });
+      this.setState({ inputError: 'Email не корректен' });
     } else if (email === '' || password === '') {
       this.setState({ inputError: 'Оба поля обязательны для заполнения' });
     } else {
