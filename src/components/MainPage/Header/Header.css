@@ -32,12 +32,7 @@
 }
 
 .currency {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   background-color: #555658;
-  padding-left: 45px;
-  padding-right: 45px;
   font-size: 18px;
 }
 
@@ -51,6 +46,12 @@
 
 .currency__link {
   color: #a8a8a8;
+  padding-left: 45px;
+  padding-right: 45px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .currency__link_active {
