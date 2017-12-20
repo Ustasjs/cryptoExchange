@@ -10,6 +10,8 @@
 - redux
 - redux-saga
 - redux-actions
+- Jest
+- Enzyme
 
 
 ## Старт проекта
