@@ -1,3 +1,5 @@
+@import 'static/mixins/mixins.scss';
+
 .auth__form {
   display: flex;
   flex-direction: column;
@@ -29,6 +31,10 @@
   padding-bottom: 15px;
   outline: none;
   font-size: 18px;
+
+  @include smartphone {
+    width: 260px;
+  }
 }
 
 .auth__icon {
@@ -53,6 +59,10 @@
   margin-bottom: 15px;
   cursor: pointer;
   outline: none;
+
+  @include smartphone {
+    font-size: 18px;
+  }
 }
 
 .auth__submit:active {

@@ -9,10 +9,7 @@ export class Footer extends Component {
         <div className="container container__footer">
           <div className="footer__item footer__item_left">
             <div className="footer__info">
-              <p className="footer__par">
-                Сделано с любовью и старанием на курсе "React.js" в Loftschool
-              </p>
-              <p className="footer__par">Автор работы: Устюжанин Станислав.</p>
+              <p className="footer__par">Автор: Устюжанин Станислав.</p>
             </div>
           </div>
           <div className="footer__item footer__item_right">

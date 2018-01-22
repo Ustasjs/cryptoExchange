@@ -46,7 +46,7 @@ export class Header extends Component {
             </li>
           </ul>
           <ul className="header__item header__item_right">
-            <li className="header__userInfo">{email}</li>
+            <li className="header__userInfo header__userInfo_email">{email}</li>
             <li
               className="header__userInfo header__userInfo_clickable"
               onClick={this.handleClick}
