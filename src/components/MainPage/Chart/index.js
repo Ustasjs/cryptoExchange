@@ -5,7 +5,8 @@ import Spinner from 'react-svg-spinner';
 
 export class Chart extends Component {
   state = {
-    isDataLoaded: true
+    isDataLoaded: true,
+    windowWidth: 768
   };
 
   componentDidMount() {
@@ -18,11 +19,23 @@ export class Chart extends Component {
     if (isLoaded) {
       this.setState({ isDataLoaded: true });
     }
+
+    function checkWidth() {
+      const width = document.documentElement.clientWidth
+      if (width <= 768) {
+        this.setState({ windowWidth: width });
+      }
+    }
+
+    window.addEventListener('resize', checkWidth.bind(this));
+    checkWidth.call(this);
   }
 
   render() {
     const { min, max, purchase, sell } = this.props.data;
-    const { isDataLoaded } = this.state;
+    const { isDataLoaded, windowWidth } = this.state;
+    const shartWidth = windowWidth * 0.95 + 'px';
+    const shartHeight = windowWidth * 0.95 * 0.56 + 'px';
 
     return (
       <div className="chart">
@@ -69,8 +82,8 @@ export class Chart extends Component {
               min={min}
               max={max}
               legend={'bottom'}
-              width="710px"
-              height="400px"
+              width={shartWidth}
+              height={shartHeight}
             />
           </div>
         </div>
