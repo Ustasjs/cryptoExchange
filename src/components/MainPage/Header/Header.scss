@@ -9,6 +9,11 @@
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+
+  @include smartphone {
+    flex-direction: column;
+    justify-content: space-around;
+  }
 }
 
 .header__item {
@@ -37,11 +42,24 @@
   width: 170px;
 }
 
+.header__item_currency {
+  @include smartphone {
+    display: block;
+    order: 2;
+  }
+}
+
 .currency {
   background-color: #555658;
   font-size: 18px;
   padding-top: 10px;
   padding-bottom: 10px;
+  @include smartphone {
+    font-size: 16px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-top: 20px;
+  }
 }
 
 .currency__type {
@@ -50,6 +68,9 @@
 
 .currency:first-child {
   margin-right: 20px;
+  @include smartphone {
+    margin-right: 0;
+  }
 }
 
 .currency__link {
@@ -70,6 +91,13 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+
+  @include smartphone {
+    order: 1;
+    @include smartphone {
+      display: block;
+    }
+  }
 }
 
 .header__userInfo {
@@ -88,7 +116,6 @@
   }
 }
 
-
 .header__userInfo_clickable {
   cursor: pointer;
 }
@@ -96,4 +123,10 @@
 .header__userInfo_clickable:active {
   background-color: #3f4041;
   cursor: pointer;
+}
+
+.header__userInfo_logout {
+  @include smartphone {
+    border-radius: 0;
+  }
 }

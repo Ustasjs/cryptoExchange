@@ -60,11 +60,16 @@
     align-items: flex-start;
     margin-left: 0;
   }
+
+  @include smartphone {
+    align-items: center;
+  }
 }
 
 .data {
   margin-right: 30px;
   margin-top: 50px;
+  text-align: center;
   @include laptop {
     margin-right: 0;
   }
