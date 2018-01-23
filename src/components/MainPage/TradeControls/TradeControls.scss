@@ -4,13 +4,17 @@
   margin-top: 45px;
   position: relative;
 
-  @include smartphone {
+  @include smallPhone {
     text-align: center;
   }
 }
 
 .controls_title {
   margin-bottom: 45px;
+
+  @include smartphone {
+    text-align: center;
+  }
 }
 
 .controls__error {
