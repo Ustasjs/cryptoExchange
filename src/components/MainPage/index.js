@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
-import Chart from './Chart';
+import ChartSection from './ChartSection';
 import Account from './Account';
 import TradeControls from './TradeControls';
 import './MainPage.css';
@@ -64,7 +64,7 @@ export class MainPage extends Component {
                     path={`${url}/btc`}
                     exact
                     render={props => (
-                      <Chart
+                      <ChartSection
                         onClick={this.handleOffsetClick}
                         data={btc}
                         isLoaded={isBtcLoaded}
@@ -77,7 +77,7 @@ export class MainPage extends Component {
                     path={`${url}/eth`}
                     exact
                     render={props => (
-                      <Chart
+                      <ChartSection
                         onClick={this.handleOffsetClick}
                         data={eth}
                         isLoaded={isEthLoaded}

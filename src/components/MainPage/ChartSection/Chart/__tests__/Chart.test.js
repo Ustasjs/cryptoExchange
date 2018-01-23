@@ -9,7 +9,10 @@ describe('Component Chart', () => {
     min: '1',
     max: '100',
     purchase: '8',
-    sell: '10'
+    sell: '10',
+    shartWidth: 700,
+    shartHeight: 400,
+    isDataLoaded: true
   };
   const select = () => true;
   const wrapper = shallow(<Chart data={data} select={select} />);
@@ -30,7 +33,7 @@ describe('Component Chart', () => {
   });
 
   describe('loading data', () => {
-    wrapper.setState({ isDataLoaded: false });
+    wrapper.setProps({ isDataLoaded: false });
     it('Spinner is exist', () => {
       expect(wrapper.find(Spinner)).toHaveLength(1);
     });

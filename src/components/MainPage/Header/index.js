@@ -15,7 +15,7 @@ export class Header extends Component {
               <img src={headerLogo} alt="logo" className="header__logo" />
             </div>
           </div>
-          <ul className="header__item">
+          <ul className="header__item header__item_currency">
             <li className="currency">
               <NavLink
                 onClick={onClick}
@@ -48,7 +48,7 @@ export class Header extends Component {
           <ul className="header__item header__item_right">
             <li className="header__userInfo header__userInfo_email">{email}</li>
             <li
-              className="header__userInfo header__userInfo_clickable"
+              className="header__userInfo header__userInfo_logout header__userInfo_clickable"
               onClick={this.handleClick}
             >
               Logout

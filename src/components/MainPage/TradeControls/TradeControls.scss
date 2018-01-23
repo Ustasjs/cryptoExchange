@@ -1,6 +1,12 @@
+@import 'static/mixins/mixins.scss';
+
 .controls {
   margin-top: 45px;
   position: relative;
+
+  @include smartphone {
+    text-align: center;
+  }
 }
 
 .controls_title {
@@ -63,6 +69,10 @@
   margin-left: 20px;
   color: #ffffff;
   outline: none;
+
+  @include smartphone {
+    margin-top: 20px;
+  }
 }
 
 .control__button_sell {
