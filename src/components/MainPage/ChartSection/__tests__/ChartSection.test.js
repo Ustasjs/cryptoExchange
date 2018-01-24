@@ -5,6 +5,12 @@ import Chart from '../Chart';
 import { shallow } from 'enzyme';
 
 describe('Component ChartSection', () => {
+  Object.defineProperty(window, 'matchMedia', {
+    value: jest.fn(() => {
+      return { matches: true };
+    })
+  });
+
   const data = {
     phoneOrientation: 'portrait'
   };
