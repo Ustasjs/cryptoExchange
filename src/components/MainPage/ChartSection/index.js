@@ -13,6 +13,11 @@ export class ChartSection extends Component {
   componentDidMount() {
     const { select } = this.props;
     select();
+
+    window.addEventListener('resize', this.checkWidth);
+    window.addEventListener('resize', this.checkPhoneOrientation);
+    this.checkWidth();
+    this.checkPhoneOrientation();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -20,38 +25,11 @@ export class ChartSection extends Component {
     if (isLoaded) {
       this.setState({ isDataLoaded: true });
     }
+  }
 
-    function checkWidth() {
-      const width = document.documentElement.clientWidth;
-      const { windowWidth } = this.state;
-      if (width <= 768) {
-        this.setState({ windowWidth: width });
-      }
-
-      if (width > 768 && windowWidth < 768) {
-        this.setState({ windowWidth: 768 });
-      }
-    }
-
-    function checkPhoneOrientation() {
-      const width = document.documentElement.clientWidth;
-      const { phoneOrientation } = this.state;
-      if (
-        width < 480 &&
-        window.matchMedia('(orientation: portrait)').matches &&
-        !phoneOrientation
-      ) {
-        this.setState({ phoneOrientation: 'portrait' });
-      }
-      if (phoneOrientation && width >= 480) {
-        this.setState({ phoneOrientation: null });
-      }
-    }
-
-    window.addEventListener('resize', checkWidth.bind(this));
-    window.addEventListener('resize', checkPhoneOrientation.bind(this));
-    checkWidth.call(this);
-    checkPhoneOrientation.call(this);
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.checkWidth);
+    window.removeEventListener('resize', this.checkPhoneOrientation);
   }
 
   render() {
@@ -92,6 +70,33 @@ export class ChartSection extends Component {
     const { onClick } = this.props;
     this.setState({ isDataLoaded: false });
     onClick(e);
+  };
+
+  checkPhoneOrientation = () => {
+    const width = document.documentElement.clientWidth;
+    const { phoneOrientation } = this.state;
+    if (
+      width < 480 &&
+      window.matchMedia('(orientation: portrait)').matches &&
+      !phoneOrientation
+    ) {
+      this.setState({ phoneOrientation: 'portrait' });
+    }
+    if (phoneOrientation && width >= 480) {
+      this.setState({ phoneOrientation: null });
+    }
+  };
+
+  checkWidth = () => {
+    const width = document.documentElement.clientWidth;
+    const { windowWidth } = this.state;
+    if (width <= 768) {
+      this.setState({ windowWidth: width });
+    }
+
+    if (width > 768 && windowWidth < 768) {
+      this.setState({ windowWidth: 768 });
+    }
   };
 }
 
