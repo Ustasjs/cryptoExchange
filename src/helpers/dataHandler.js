@@ -5,7 +5,7 @@ export function parseCurrency(numCurrency) {
 
 export function handleInputData(response) {
   function handleDataForChart(inputData, dataType) {
-    return inputData.map((value, index) => {
+    return inputData.map(value => {
       return [value.mts / 1000, value[dataType]];
     });
   }

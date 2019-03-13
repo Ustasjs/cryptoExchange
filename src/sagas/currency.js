@@ -30,7 +30,7 @@ export function* fetchCurrencyFlow() {
     yield put(fetchBtcRequest(offset));
     yield put(fetchEthRequest(offset));
 
-    yield call(delay, 15000);
+    yield call(delay, 30000);
   }
 }
 

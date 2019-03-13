@@ -1,14 +1,16 @@
 import axios from 'axios';
 
+const baseURL = 'http://localhost:7000/';
+
 axios.defaults.headers.post['Accept'] = '*/*';
 
 const instance = axios.create({
-  baseURL: 'https://lorem-ipsum.online/',
+  baseURL,
   headers: { Accept: '*/*' }
 });
 
 const jsonInstance = axios.create({
-  baseURL: 'https://lorem-ipsum.online/',
+  baseURL,
   headers: { 'Content-Type': 'application/json' }
 });
 
@@ -21,12 +23,10 @@ export const clearTokenApi = () => {
 };
 
 export const login = ({ email, password }) =>
-  jsonInstance
-    .post('/user_token', { auth: { email, password } })
-    .then(response => {
-      if (response.data.result === 'error') return Promise.reject(response);
-      return response;
-    });
+  jsonInstance.post('/user_token', { email, password }).then(response => {
+    if (response.data.result === 'error') return Promise.reject(response);
+    return response;
+  });
 
 export const registration = ({ email, password }) =>
   instance

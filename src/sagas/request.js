@@ -8,10 +8,11 @@ export default function* requestFlow(fn, args) {
     if (yield select(getIsNetworkErrorPresent)) yield put(clearNetworkErrors());
     return response;
   } catch (error) {
-    if (error.status >= 400) {
-      yield put(setNetworkError(error));
+    const { response } = error;
+    if (response.status >= 400) {
+      yield put(setNetworkError(response));
     }
 
-    throw error;
+    throw response;
   }
 }

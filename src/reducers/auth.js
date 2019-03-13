@@ -54,16 +54,9 @@ export const auth = handleActions(
 );
 
 export function handleRegistrationError(errorObj) {
-  function makeFirstLetterCapital(value) {
-    return value.charAt(0).toUpperCase() + value.slice(1);
-  }
   let errorKeys = Object.keys(errorObj);
   return errorKeys
-    .map(
-      value =>
-        [].concat(makeFirstLetterCapital(value), errorObj[value]).join(' ') +
-        '.'
-    )
+    .map(value => [].concat(errorObj[value]).join(' ') + '.')
     .join(' ');
 }
 
