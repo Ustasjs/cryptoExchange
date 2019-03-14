@@ -38,8 +38,8 @@ describe('Saga fetchCurrencyFlow', () => {
       put(fetchEthRequest({ data: 'data' }))
     );
   });
-  it('4. Effect delay 15000', () => {
-    expect(saga.next().value).toEqual(call(delay, 15000));
+  it('4. Effect delay 30000', () => {
+    expect(saga.next().value).toEqual(call(delay, 30000));
   });
 });
 

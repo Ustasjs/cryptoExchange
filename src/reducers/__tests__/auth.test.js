@@ -93,9 +93,9 @@ describe('Auth reducer', () => {
 
 describe('function handleRegistrationError', () => {
   const message = {
-    email: ['не содержит знак @', 'слишком длинное значение'],
-    password: ['не содержит знак @', 'слишком длинное значение'],
-    someprop: ['не содержит знак @', 'слишком длинное значение']
+    email: ['Email не содержит знак @', 'слишком длинное значение'],
+    password: ['Password не содержит знак @', 'слишком длинное значение'],
+    someprop: ['Someprop не содержит знак @', 'слишком длинное значение']
   };
   it('should return string', () => {
     expect(typeof handleRegistrationError(message) === 'string').toBeTruthy();

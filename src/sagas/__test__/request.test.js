@@ -32,7 +32,7 @@ describe('Saga requestFlow', () => {
       expect(saga.next().value).toEqual(select(getIsNetworkErrorPresent));
     });
     it('3. Effect put setNetworkError', () => {
-      expect(saga.throw({ status: 401 }).value).toEqual(
+      expect(saga.throw({ response: { status: 401 } }).value).toEqual(
         put(setNetworkError({ status: 401 }))
       );
     });
