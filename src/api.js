@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-const baseURL = 'http://localhost:7000/';
+const baseURL =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:7000/'
+    : process.env.BASE_URL;
 
 axios.defaults.headers.post['Accept'] = '*/*';
 
