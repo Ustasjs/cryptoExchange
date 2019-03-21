@@ -5,9 +5,7 @@ export function parseCurrency(numCurrency) {
 
 export function handleInputData(response) {
   function handleDataForChart(inputData, dataType) {
-    return inputData.map(value => {
-      return [value.mts / 1000, value[dataType]];
-    });
+    return inputData.map(value => [new Date(value.mts), value[dataType]]);
   }
 
   function getExtremeValue(inputData, typeOfExtreme) {
@@ -50,12 +48,12 @@ export function getMinValueOfProp(arr, prop) {
   let elementWithMinValue = arr.reduce((prev, current) => {
     return current[prop] < prev[prop] ? current : prev;
   });
-  return elementWithMinValue[prop];
+  return elementWithMinValue[prop].toFixed(2);
 }
 
 export function getMaxValueOfProp(arr, prop) {
   let elementWithMaxValue = arr.reduce((prev, current) => {
     return current[prop] > prev[prop] ? current : prev;
   });
-  return elementWithMaxValue[prop];
+  return elementWithMaxValue[prop].toFixed(2);
 }

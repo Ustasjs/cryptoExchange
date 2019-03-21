@@ -1,9 +1,6 @@
 import axios from 'axios';
 
-const baseURL =
-  process.env.NODE_ENV === 'development'
-    ? 'http://localhost:7000/'
-    : 'https://crypto-exchange-backend.herokuapp.com/';
+const baseURL = 'https://crypto-exchange-backend.herokuapp.com/';
 
 axios.defaults.headers.post['Accept'] = '*/*';
 
