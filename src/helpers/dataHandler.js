@@ -13,11 +13,11 @@ export function handleInputData(response) {
       case 'max':
         let sellMax = getMaxValueOfProp(inputData, 'sell');
         let purchaseMax = getMaxValueOfProp(inputData, 'purchase');
-        return Math.max(sellMax, purchaseMax);
+        return Math.max(sellMax, purchaseMax).toFixed(2);
       case 'min':
         let sellMin = getMinValueOfProp(inputData, 'sell');
         let purchaseMin = getMinValueOfProp(inputData, 'purchase');
-        return Math.min(sellMin, purchaseMin);
+        return Math.min(sellMin, purchaseMin).toFixed(2);
       default:
         throw new Error(
           'Неверное значения аргумента typeOfExtreme, аргумент может принимать только значения min и max'
@@ -48,12 +48,12 @@ export function getMinValueOfProp(arr, prop) {
   let elementWithMinValue = arr.reduce((prev, current) => {
     return current[prop] < prev[prop] ? current : prev;
   });
-  return elementWithMinValue[prop].toFixed(2);
+  return elementWithMinValue[prop];
 }
 
 export function getMaxValueOfProp(arr, prop) {
   let elementWithMaxValue = arr.reduce((prev, current) => {
     return current[prop] > prev[prop] ? current : prev;
   });
-  return elementWithMaxValue[prop].toFixed(2);
+  return elementWithMaxValue[prop];
 }
