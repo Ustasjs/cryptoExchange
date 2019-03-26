@@ -1,5 +1,6 @@
 import { authFlow } from '../auth';
 import { registrationSuccess, loginSuccess, logout } from '../../actions/auth';
+import { userInformationRequest, userWalletRequest } from '../../actions/user';
 import { select, call, take, put } from 'redux-saga/effects';
 import { getIsAuthorized } from '../../reducers/auth';
 import {
@@ -37,15 +38,23 @@ describe('Saga authFlow', () => {
       expect(saga.next().value).toEqual(call(setTokenToLocalStorage, token));
     });
 
-    it('6. Effect take logout', () => {
+    it('6. Effect put userInformationRequest', () => {
+      expect(saga.next().value).toEqual(put(userInformationRequest()));
+    });
+
+    it('7. Effect put userWalletRequest', () => {
+      expect(saga.next().value).toEqual(put(userWalletRequest()));
+    });
+
+    it('8. Effect take logout', () => {
       expect(saga.next().value).toEqual(take(logout));
     });
 
-    it('7. Effect call removeTokenFromLocalStorage', () => {
+    it('9. Effect call removeTokenFromLocalStorage', () => {
       expect(saga.next().value).toEqual(call(removeTokenFromLocalStorage));
     });
 
-    it('8. Effect call clearTokenApi', () => {
+    it('10. Effect call clearTokenApi', () => {
       expect(saga.next().value).toEqual(call(clearTokenApi));
     });
   });
@@ -78,15 +87,23 @@ describe('Saga authFlow', () => {
       expect(saga.next().value).toEqual(call(setTokenToLocalStorage, token));
     });
 
-    it('7. Effect take logout', () => {
+    it('7. Effect put userInformationRequest', () => {
+      expect(saga.next().value).toEqual(put(userInformationRequest()));
+    });
+
+    it('8. Effect put userWalletRequest', () => {
+      expect(saga.next().value).toEqual(put(userWalletRequest()));
+    });
+
+    it('9. Effect take logout', () => {
       expect(saga.next().value).toEqual(take(logout));
     });
 
-    it('8. Effect call removeTokenFromLocalStorage', () => {
+    it('10. Effect call removeTokenFromLocalStorage', () => {
       expect(saga.next().value).toEqual(call(removeTokenFromLocalStorage));
     });
 
-    it('9. Effect call clearTokenApi', () => {
+    it('11. Effect call clearTokenApi', () => {
       expect(saga.next().value).toEqual(call(clearTokenApi));
     });
   });

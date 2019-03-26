@@ -1,5 +1,6 @@
 import { take, put, call, select } from 'redux-saga/effects';
 import { registrationSuccess, loginSuccess, logout } from '../actions/auth';
+import { userInformationRequest, userWalletRequest } from '../actions/user';
 import {
   getTokenFromLocalStorage,
   setTokenToLocalStorage,
@@ -27,6 +28,8 @@ export function* authFlow() {
 
     yield call(setTokenApi, token);
     yield call(setTokenToLocalStorage, token);
+    yield put(userInformationRequest());
+    yield put(userWalletRequest());
     yield take(logout);
     yield call(removeTokenFromLocalStorage);
     yield call(clearTokenApi);

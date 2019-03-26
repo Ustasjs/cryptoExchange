@@ -1,7 +1,8 @@
-import { loginSuccess, registrationSuccess } from '../actions/auth';
 import {
+  userInformationRequest,
   userInformationSuccess,
   userInformationFailure,
+  userWalletRequest,
   userWalletSuccess,
   userWalletFailure
 } from '../actions/user';
@@ -27,6 +28,6 @@ export function* fetchUserWallet(action) {
 }
 
 export function* fetchUserWatch() {
-  yield takeLatest([loginSuccess, registrationSuccess], fetchUserInfo);
-  yield takeLatest([loginSuccess, registrationSuccess], fetchUserWallet);
+  yield takeLatest(userInformationRequest, fetchUserInfo);
+  yield takeLatest(userWalletRequest, fetchUserWallet);
 }
